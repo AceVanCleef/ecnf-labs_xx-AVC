@@ -22,6 +22,12 @@ using System.Threading.Tasks;
  *    string lng = String.Format("{0:0.00}", Longitude);
  *    (source: http://stackoverflow.com/questions/7076841/how-to-round-to-two-decimal-places-in-a-string )
  *
+ *  - Culture specific characters:
+ *    'CultureInfo.CreateSpecificCulture("de-CH")' in 
+ *    string lat = string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);
+ *    For doubles: ch = x.xx, de = x,xx.
+ *    Why is this relevant? To prevent runtime errors when working with predefined string format
+ *
  */
 
 
@@ -69,6 +75,10 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             string lat = String.Format("{0:0.00}", Latitude);
             string lng = String.Format("{0:0.00}", Longitude);
             //source: http://stackoverflow.com/questions/7076841/how-to-round-to-two-decimal-places-in-a-string
+
+            //Side note: string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);   <- Culture specific characters
+            // For doubles: ch = x.xx, de = x,xx.
+            // Why is this relevant? to prevent runtime errors when working with predefined string formatting
 
             return $"WayPoint: {(Name == null? "" : Name)} {lat}/{lng}";
         }
