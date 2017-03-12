@@ -27,6 +27,16 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerConsole
             //Console.WriteLine($"{wayPoint.Name}: {wayPoint.Latitude}/{wayPoint.Longitude}");
             Console.WriteLine(wayPoint);
 
+            //testing myWayPoint.distance(otherWayPoint):
+            var wpBern = new WayPoint("Bern", 46.57266, 7.26471);
+            var wpTripolis = new WayPoint("Tripolis", 32.53270, 13.10358);
+            double distance = wpBern.Distance(wpTripolis);
+            Console.WriteLine("The Distance between...");
+            Console.WriteLine(wpBern + " and ");
+            Console.WriteLine(wpTripolis);
+            Console.WriteLine("equals: " + distance + "km.");
+
+
 
             //Um zu verhindern, dass Konsolenfenster gleich wieder geschlossen wird:
             Console.WriteLine("Press any key to quit");

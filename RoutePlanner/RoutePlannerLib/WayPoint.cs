@@ -41,6 +41,25 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             Longitude = longitude;
         }
 
+        /// d = R arccos [sin (φa) • sin(φb) + cos(φa) • cos(φb) • cos(λa - λb)]
+        /// Radius  R=6371km
+        /// Borrowed by: Yanick Schraner
+        public double Distance(WayPoint target)
+        {
+            int R = 6371;
+            //return R * Math.Acos(Math.Sin(Longitude) * Math.Sin(target.Longitude) + Math.Cos(Longitude) * Math.Cos(target.Longitude) * Math.Cos(Latitude - target.Latitude));
+            return R * Math.Acos(Math.Sin(DegreeToRad(Latitude))
+                * Math.Sin(DegreeToRad(target.Latitude))
+                + Math.Cos(DegreeToRad(Latitude))
+                * Math.Cos(DegreeToRad(target.Latitude))
+                * Math.Cos(DegreeToRad(Longitude - target.Longitude)));
+        }
+
+        private double DegreeToRad(double degree)
+        {
+            return degree * Math.PI / 180;
+        }
+
         /** How to override ToString():
          *  see: https://msdn.microsoft.com/en-us/library/ms173154.aspx
          */
