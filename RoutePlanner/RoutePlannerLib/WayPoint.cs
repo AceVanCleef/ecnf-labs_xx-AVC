@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,8 +73,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public override string ToString()
         {
             // rounding double using String.Format():
-            string lat = String.Format("{0:0.00}", Latitude);
-            string lng = String.Format("{0:0.00}", Longitude);
+            string lat = String.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);
+            string lng = String.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Longitude);
             //source: http://stackoverflow.com/questions/7076841/how-to-round-to-two-decimal-places-in-a-string
 
             //Side note: string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);   <- Culture specific characters
