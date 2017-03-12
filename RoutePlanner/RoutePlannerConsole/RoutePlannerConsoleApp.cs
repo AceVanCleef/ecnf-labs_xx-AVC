@@ -9,6 +9,11 @@ using System.Reflection;
 /*Import WayPoint.cs */
 using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib;
 
+/** Lessons learned:
+ *  - when instantiating objects of a class situated in another assembly/namespace,
+ *    its class must be public (or any other valid visibility level).
+ */
+
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerConsole
 {
     class RoutePlannerConsoleApp
