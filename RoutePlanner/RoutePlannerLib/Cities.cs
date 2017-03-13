@@ -30,13 +30,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         private List<City> _cities = new List<City>();
 
         /* amount of cities read from file and stored in _cities */
-        public int Count { set; get; }
+        public int Count { set; get; }  //ToDo set löschen; get: _cities.count()
 
         public City this[int index] //indexer implementation
         {
-            get { return this._cities[index]; }
+            get {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException("index too high or too low.");
+                }
+                return this._cities[index]; }
             set {
-                if (index < 0 || index > Count)
+                if (index < 0 || index >= Count)
                 {
                     throw new ArgumentOutOfRangeException("index too high or too low.");
                 }
@@ -62,12 +67,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                         string _FileLine = reader.ReadLine();
                         
                         //create new City:
-                        _cities[Count] = ConverttoCity(_FileLine);
+                        _cities[Count] = ConverttoCity(_FileLine); //nicht so. Sondern cities.add(city)
+                        //ToDo: ist city schon drinn? wenn nein, dann erst hinzufügen
+
 
                         //increment count
                         ++countNewEntries;
                         //update Count property
-                        ++Count;
+                        ++Count; //...*dann brauchts das hier nicht
                     }
                 }
                 //ToDo: file schliessen.
