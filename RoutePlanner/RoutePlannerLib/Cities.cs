@@ -19,11 +19,24 @@ using System.Threading.Tasks;
  *    https://msdn.microsoft.com/en-us/library/system.io.streamreader.readline(v=vs.110).aspx
  *  - Closing files/streams: 
  *    'using' closes the file/stream automatically and also more  
-      reliably. No .Close() or .Dispose() necessary.  
- * 
+ *    reliably. No .Close() or .Dispose() necessary.  
+ *
+ *  - LINQ:
+ *    LINQ enables you to query any collection implementing IEnumerable<T>, whether
+ *    an array, list, or XML DOM, as well as remote data sources, such as tables in a SQL
+ *    Server database. LINQ offers the benefits of both compile-time type checking and
+ *    dynamic query composition. 
+ *    
+ *    LINQ: pendant zu Java Collection Streams API
+            * return:  an output sequence, transformed from input sequence
+            * _cities: Enumerable input sequnce (such as List, Array, SQL-DB).
+            * city:    element of enumerable input sequence
+            * a == b  conditional, search filter criteria (Predicate)
+            * or:   lambda (n => a.contains(b))
+            * .Where() - LINQ standard operator
+ *
  */
 
-//ToDo: 
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -41,18 +54,34 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 {
                     throw new ArgumentOutOfRangeException("index too high or too low.");
                 }
-                return this._cities[index]; }
-            /*
-            set {
-                if (index < 0 || index >= Count)
-                {
-                    throw new ArgumentOutOfRangeException("index too high or too low.");
-                }
-                this._cities[index] = value;
+                return this._cities[index];
             }
-            */
         }
 
+        /// <summary>
+        /// returns all neighbouring cities within distance around location.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        IEnumerable<City> FindNeighbours(WayPoint location, double distance)
+        {
+            /* LINQ: pendant zu Java Collection Streams API
+             * return:  an output sequence, transformed from input sequence
+             * _cities: Enumerable input sequnce (such as List, Array, SQL-DB).
+             * city:    element of enumerable input sequence
+             * a <= b:  conditional / search filter criteria (Predicate)
+             * .Where(lambda): LINQ standard operator
+            */
+            return _cities.Where(city => city.Location.Distance(location) <= distance);
+        }
+
+        public IEnumerable<City> FindNeighboursSorted(WayPoint location, double distance)
+        {
+            // Chaining query operators: inputcollection.FindAll().OrderBy()
+            return _cities.FindAll(city => city.Location.Distance(location) <= distance)
+                .OrderBy(city => city.Location.Distance(location));
+        }
 
         public int ReadCities(string filename)
         {
@@ -64,7 +93,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     throw new IOException("File not found");
                 }
 
-                using (var reader = new StreamReader(filename))
+                using (var reader = new StreamReader(filename))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
                 {
                     while (reader.Peek() >= 0) // <- Are there more lines to read?
                     {
