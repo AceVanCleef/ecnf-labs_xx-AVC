@@ -17,11 +17,13 @@ using System.Threading.Tasks;
  *    https://msdn.microsoft.com/en-us/library/system.io.streamreader.peek(v=vs.110).aspx
  *  - How to use a StreamReader (not yet verified if it works)
  *    https://msdn.microsoft.com/en-us/library/system.io.streamreader.readline(v=vs.110).aspx
- *    
+ *  - Closing files/streams: 
+ *    'using' closes the file/stream automatically and also more  
+      reliably. No .Close() or .Dispose() necessary.  
  * 
  */
 
-    //ToDo: 
+//ToDo: 
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -30,7 +32,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         private List<City> _cities = new List<City>();
 
         /* amount of cities read from file and stored in _cities */
-        public int Count { set; get; }  //ToDo set löschen; get: _cities.count()
+        public int Count { get { return _cities.Count(); } }  //Done: set löschen; get: _cities.count()
 
         public City this[int index] //indexer implementation
         {
@@ -40,6 +42,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     throw new ArgumentOutOfRangeException("index too high or too low.");
                 }
                 return this._cities[index]; }
+            /*
             set {
                 if (index < 0 || index >= Count)
                 {
@@ -47,6 +50,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 }
                 this._cities[index] = value;
             }
+            */
         }
 
 
@@ -62,22 +66,25 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
                 using (var reader = new StreamReader(filename))
                 {
-                    while (reader.Peek() >= 0)
+                    while (reader.Peek() >= 0) // <- Are there more lines to read?
                     {
                         string _FileLine = reader.ReadLine();
                         
                         //create new City:
-                        _cities[Count] = ConverttoCity(_FileLine); //nicht so. Sondern cities.add(city)
-                        //ToDo: ist city schon drinn? wenn nein, dann erst hinzufügen
+                        City NewCity = ConverttoCity(_FileLine); //nicht so. Sondern cities.add(city)
+                        //ist city schon drinn? wenn nein, dann erst hinzufügen
+                        if (!_cities.Contains(NewCity))
+                        {
+                            _cities.Add(NewCity);
+                            //increment count
+                            ++countNewEntries;
+                        }
 
-
-                        //increment count
-                        ++countNewEntries;
-                        //update Count property
-                        ++Count; //...*dann brauchts das hier nicht
+                        
                     }
+                    //Note: using closes the file/stream automatically and also more  
+                    //      reliably. No .Close() or .Dispose() necessary.
                 }
-                //ToDo: file schliessen.
             } catch (Exception e)
             {
                 Console.WriteLine("The process failed: {0}", e.ToString());
