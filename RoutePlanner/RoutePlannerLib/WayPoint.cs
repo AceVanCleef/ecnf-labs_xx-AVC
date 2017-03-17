@@ -73,11 +73,12 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public override string ToString()
         {
             /* Invariante Culture property: macht Formattierung Spachenunabhängig */
-            CultureInfo Invc = CultureInfo.InvariantCulture;
+            CultureInfo _Invc = CultureInfo.InvariantCulture;
+            CultureInfo _De_CH = CultureInfo.CreateSpecificCulture("de-CH");
 
             // rounding double using String.Format():
-            string lat = String.Format(Invc, "{0:0.00}", Latitude);
-            string lng = String.Format(Invc, "{0:0.00}", Longitude);
+            string lat = String.Format(_Invc, "{0:0.00}", Latitude);
+            string lng = String.Format(_Invc, "{0:0.00}", Longitude);
             //source: http://stackoverflow.com/questions/7076841/how-to-round-to-two-decimal-places-in-a-string
 
             //Side note: string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);   <- Culture specific characters
