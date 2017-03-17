@@ -47,14 +47,34 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /* amount of cities read from file and stored in _cities */
         public int Count { get { return _cities.Count(); } }  //Done: set löschen; get: _cities.count()
 
-        public City this[int index] //indexer implementation
+        /* public City this[int index] //indexer implementation
+         {
+             get
+             {
+                 if (_cities.Count <= index && index < 0) //0 >= 0 -> Exception :(
+                 {
+                     throw new ArgumentOutOfRangeException("index too high or too low.");
+                 }
+                 else
+                 {
+                     return this._cities[index];
+                 }
+             }
+         }
+         */
+
+        public City this[int index]
         {
-            get {
-                if (index < 0 || index >= Count)
+            get
+            {
+                if (_cities.Count > index && index >= 0)
                 {
-                    throw new ArgumentOutOfRangeException("index too high or too low.");
+                    return _cities[index];
                 }
-                return this._cities[index];
+                else
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
             }
         }
 
@@ -64,7 +84,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// <param name="location"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        IEnumerable<City> FindNeighbours(WayPoint location, double distance)
+        public IEnumerable<City> FindNeighbours(WayPoint location, double distance)
         {
             /* LINQ: pendant zu Java Collection Streams API
              * return:  an output sequence, transformed from input sequence
@@ -83,6 +103,12 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 .OrderBy(city => city.Location.Distance(location));
         }
 
+        /// <summary>
+        /// reads a \t deliminated file of cities and returns
+        /// the amount of newly added cities.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns name="countNewEntries"></returns>
         public int ReadCities(string filename)
         {
             int countNewEntries = 0;
@@ -93,7 +119,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     throw new IOException("File not found");
                 }
 
-                using (var reader = new StreamReader(filename))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
+                using (var reader = new StreamReader(new FileStream(filename, FileMode.Open)))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
                 {
                     while (reader.Peek() >= 0) // <- Are there more lines to read?
                     {

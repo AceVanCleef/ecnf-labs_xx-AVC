@@ -72,15 +72,19 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
          */
         public override string ToString()
         {
+            /* Invariante Culture property: macht Formattierung Spachenunabhängig */
+            CultureInfo Invc = CultureInfo.InvariantCulture;
+
             // rounding double using String.Format():
-            string lat = String.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);
-            string lng = String.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Longitude);
+            string lat = String.Format(Invc, "{0:0.00}", Latitude);
+            string lng = String.Format(Invc, "{0:0.00}", Longitude);
             //source: http://stackoverflow.com/questions/7076841/how-to-round-to-two-decimal-places-in-a-string
 
             //Side note: string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);   <- Culture specific characters
             // For doubles: ch = x.xx, de = x,xx.
             // Why is this relevant? to prevent runtime errors when working with predefined string formatting
 
+            //WayPoint: Windisch 0.56/0.65
             return $"WayPoint: {(Name == null? "" : Name)} {lat}/{lng}";
         }
     }

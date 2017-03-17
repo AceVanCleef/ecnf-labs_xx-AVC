@@ -8,6 +8,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
     public class City
     {
+ 
         public string Name { get; set; }
         public string Country { get; set; }
         public int Population { get; set; }
@@ -21,5 +22,12 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             Location = location;
         }
 
+        public City(string name, string country, int population, double latitude, double longitude)
+        {
+            Name = name;
+            Country = country;
+            Population = population;
+            Location = new WayPoint(name, latitude, longitude);
+        }
     }
 }
