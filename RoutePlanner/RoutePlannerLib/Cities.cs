@@ -22,6 +22,7 @@ using System.Threading.Tasks;
  *    reliably. No .Close() or .Dispose() necessary.  
  *
  *  - LINQ:
+ *    -----
  *    LINQ enables you to query any collection implementing IEnumerable<T>, whether
  *    an array, list, or XML DOM, as well as remote data sources, such as tables in a SQL
  *    Server database. LINQ offers the benefits of both compile-time type checking and
@@ -35,6 +36,15 @@ using System.Threading.Tasks;
             * or:   lambda (n => a.contains(b))
             * .Where() - LINQ standard operator
  *
+ * 
+ *  - No throws keyword in C#
+ *    ------------------------
+ *    use this instead:
+ *    try {
+ *        //some code
+ *    } catch (SomeException e){
+ *        throw new SomeException(e.Message);
+ *    }
  */
 
 
@@ -111,14 +121,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// <returns name="countNewEntries"></returns>
         public int ReadCities(string filename)
         {
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException("File not found");
+            }
+
             int countNewEntries = 0;
             try
             {
-                if (!File.Exists(filename))
-                {
-                    throw new IOException("File not found");
-                }
-
+                
                 using (var reader = new StreamReader(new FileStream(filename, FileMode.Open)))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
                 {
                     while (reader.Peek() >= 0) // <- Are there more lines to read?
@@ -140,9 +151,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     //Note: using closes the file/stream automatically and also more  
                     //      reliably. No .Close() or .Dispose() necessary.
                 }
-            } catch (Exception e)
+            } 
+            catch (FileNotFoundException ffe)
             {
-                Console.WriteLine("The process failed: {0}", e.ToString());
+                //C# doesn't know throws keyword. Use this instead:
+                throw new FileNotFoundException(ffe.Message);
             }
             return countNewEntries;
         }
