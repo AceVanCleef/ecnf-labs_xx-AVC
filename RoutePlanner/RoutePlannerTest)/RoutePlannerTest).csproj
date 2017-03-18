@@ -53,12 +53,15 @@
     <Compile Include="Lab2Test.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Lab3Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="data\citiesTestDataLab2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="data\citiesTestDataLab3.txt" />
+    <Content Include="data\linksTestDataLab3.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RoutePlannerLib\RoutePlannerLib.csproj">

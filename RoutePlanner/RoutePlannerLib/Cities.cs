@@ -75,7 +75,43 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                  }
              }
          }
-        
+
+        /* search by Key */
+        public City this[string cityName]
+        {
+            get
+            {
+                if (cityName == null || cityName == "")
+                {
+                    throw new KeyNotFoundException("Not a valid key.");
+                }
+                /* Todo: Bitte erklären, was hier geschieht und warum man das so macht.
+                 *       Ebenso: Kann man statt dem Lambda eine Methode schreiben und die
+                 *       dem Predicate übergeben? Wie sähe diese Methode aus?
+                 *       
+                 *       Bitte Anwendungsbeispiele für alle in Folien 26 - 30 genannten
+                 *       Predefined delegates. Der Sprung von _predicate = myMethod zu
+                 *       _predicate = new Predicate("Was kommt hier rein?") ist zu gross.
+                 *       Fehlender Zusammenhang.
+                 *       
+                 *       Speichert ein Rredicate die Referenz auf eine Methode?
+                 *       Lambda ersetzt Methode, nehme ich an.
+                 *       
+                 *       Application examples:
+                 *       https://msdn.microsoft.com/en-us/library/bfcke1bz(v=vs.110).aspx
+                 */
+                Predicate<City> _predicate = new Predicate<City>(
+                    city => city.Name.ToLowerInvariant().Equals(cityName.ToLowerInvariant() ));
+                City _foundCity = _cities.Find(_predicate);
+                /* End of 'Brauche Erklärungen' */
+                if (_foundCity == null)
+                {
+                    throw new KeyNotFoundException($"{cityName} not found.");
+                }
+                return _foundCity;
+            }
+        }
+
         
 
         /// <summary>
