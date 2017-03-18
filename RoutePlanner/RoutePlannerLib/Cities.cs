@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -167,8 +168,13 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             string name = CityAttributes[0];
             string city = CityAttributes[1];
             int population = int.Parse(CityAttributes[2]);
-            double latitude = double.Parse(CityAttributes[3]);
-            double longitude = double.Parse(CityAttributes[4]);
+            /*
+             * culture parsing problem solution:
+             * Double.Parse(string, CultureInfo:InvarianteCulture)
+            */
+            CultureInfo culture = CultureInfo.InvariantCulture;
+            double latitude = double.Parse(CityAttributes[3], culture);
+            double longitude = double.Parse(CityAttributes[4], culture);
 
             WayPoint location = new WayPoint(name, latitude, longitude);
 
