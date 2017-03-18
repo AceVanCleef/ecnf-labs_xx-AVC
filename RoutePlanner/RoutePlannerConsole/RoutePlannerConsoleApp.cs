@@ -36,7 +36,6 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerConsole
             Console.WriteLine(wpTripolis);
             Console.WriteLine("equals: " + distance + "km.");
 
-            //moo
 
             //Um zu verhindern, dass Konsolenfenster gleich wieder geschlossen wird:
             Console.WriteLine("Press any key to quit");
