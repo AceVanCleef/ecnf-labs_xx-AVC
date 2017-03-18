@@ -46,6 +46,9 @@ using System.Threading.Tasks;
  *    } catch (SomeException e){
  *        throw new SomeException(e.Message);
  *    }
+ *    
+ *  - Culture parsing problem solution:
+ *    Double.Parse(string, CultureInfo:InvarianteCulture)
  */
 
 
@@ -58,11 +61,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /* amount of cities read from file and stored in _cities */
         public int Count { get { return _cities.Count(); } }  //Done: set löschen; get: _cities.count()
 
-        /* public City this[int index] //indexer implementation
+         public City this[int index] //indexer implementation
          {
              get
              {
-                 if (_cities.Count <= index && index < 0) //0 >= 0 -> Exception :(
+                 if (index < 0 && Count <= index) 
                  {
                      throw new ArgumentOutOfRangeException("index too high or too low.");
                  }
@@ -72,22 +75,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                  }
              }
          }
-         */
-
-        public City this[int index]
-        {
-            get
-            {
-                if (_cities.Count > index && index >= 0)
-                {
-                    return _cities[index];
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
+        
+        
 
         /// <summary>
         /// returns all neighbouring cities within distance around location.

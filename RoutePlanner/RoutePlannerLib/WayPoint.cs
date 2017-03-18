@@ -10,14 +10,6 @@ using System.Threading.Tasks;
  *  - How to override ToString(): 'public override string ToString()'
  *    (Source: https://msdn.microsoft.com/en-us/library/ms173154.aspx )
  *    
- *    Inheritance and overriding of methods:
- *    Note, that in class Object, the method head looks like:
- *    public virtual string ToString(). 
- *    virtual means, it is the root class's method implementation you 
- *    will inherit or override.
- *    To define one of your own class's method the new base implementation, 
- *    use 'new virtual'.
- *    
  *  - rounding double using String.Format():
  *    string lat = String.Format("{0:0.00}", Latitude);
  *    string lng = String.Format("{0:0.00}", Longitude);
@@ -28,7 +20,7 @@ using System.Threading.Tasks;
  *    string lat = string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);
  *    For doubles: ch = x.xx, de = x,xx.
  *    Why is this relevant? To prevent runtime errors when working with predefined string format
- *
+ *    You can also use CultureInfo culture = CultureInfo.InvariantCulture (recommended).
  */
 
 
@@ -80,10 +72,6 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             string lat = String.Format(_Invc, "{0:0.00}", Latitude);
             string lng = String.Format(_Invc, "{0:0.00}", Longitude);
             //source: http://stackoverflow.com/questions/7076841/how-to-round-to-two-decimal-places-in-a-string
-
-            //Side note: string.Format(CultureInfo.CreateSpecificCulture("de-CH"), "{0:0.00}", Latitude);   <- Culture specific characters
-            // For doubles: ch = x.xx, de = x,xx.
-            // Why is this relevant? to prevent runtime errors when working with predefined string formatting
 
             return $"WayPoint:{((Name == null || Name == "") ? "" : " " + Name)} {lat}/{lng}";
         }
