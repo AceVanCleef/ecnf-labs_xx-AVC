@@ -85,8 +85,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             // For doubles: ch = x.xx, de = x,xx.
             // Why is this relevant? to prevent runtime errors when working with predefined string formatting
 
-            //WayPoint: Windisch 0.56/0.65
-            return $"WayPoint: {(Name == null? "" : Name)} {lat}/{lng}";
+            return $"WayPoint:{((Name == null || Name == "") ? "" : " " + Name)} {lat}/{lng}";
         }
     }
 }
