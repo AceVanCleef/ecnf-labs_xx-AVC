@@ -28,9 +28,20 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             {
                 //throw exception
             }
-            RequestStatistics.Add(key, value); //GetCityRequests um int zu inkrementieren
+            if (RequestStatistics.ContainsKey(key))
+            {
+                //key already exists
+                RequestStatistics[key] = value + 1;
+            }
+            else
+            {
+                //key doesnt exist
+                RequestStatistics.Add(key, value + 1);
+            }
 
-            //Zählerstände auf console.write
+
+            //Zählerstände auf Konsole ausgeben
+            Console.WriteLine($"ToCity: {key.Name} has been requested {(GetCityRequests(key))} times");
 
         }
 
@@ -47,7 +58,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             }
             if (!RequestStatistics.ContainsKey(city))
             {
-                return 0;
+                return 0; //initial value
             }
 
             return RequestStatistics[city];
