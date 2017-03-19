@@ -84,7 +84,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             if (RouteRequested != null && from != null && to != null) 
             {
                 /* RAISE THE EVENT: treat event name as Method with parameter list from its delegate */
-                RouteRequested(this, new RouteRequestEventArgs(from.Name, to.Name, mode));
+                RouteRequested(this, new RouteRequestEventArgs(from, to, mode));
             }
 
             //TODO: implementierung fertig stellen

@@ -145,8 +145,10 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
                 TextWriter tmp = Console.Out;
                 Console.SetOut(sw);
 
+                /* classOfEvent.Eventname += subcriberobj.Eventhandler (resonds to the event) */
                 links.RouteRequested += reqWatch.LogRouteRequests;
 
+                // FIRES EVENT 'RouteRequested'
                 links.FindShortestRouteBetween("Bern", "Zürich", TransportMode.Rail);
                 links.FindShortestRouteBetween("Bern", "Zürich", TransportMode.Rail);
                 links.FindShortestRouteBetween("Basel", "Bern", TransportMode.Rail);

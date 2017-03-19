@@ -16,16 +16,16 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
     public class RouteRequestEventArgs : EventArgs
     {
         /* readonly = superior final (avoid const) */
-        public readonly string fromCity;
-        public readonly string toCity;
-        public readonly TransportMode tansportMode;
+        public City FromCity { get; }
+        public City ToCity { get; }
+        public TransportMode Mode { get; }
 
         /* required to create an object that holds informatioin for the event */
-        public RouteRequestEventArgs(string fromCity, string toCity, TransportMode tm)
+        public RouteRequestEventArgs(City fromCity, City toCity, TransportMode mode)
         {
-            this.fromCity = fromCity;
-            this.toCity = toCity;
-            tansportMode = tm;
+            FromCity = fromCity;
+            ToCity = toCity;
+            Mode = mode;
         }
 
     }

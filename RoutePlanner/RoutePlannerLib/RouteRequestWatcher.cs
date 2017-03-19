@@ -6,26 +6,29 @@ using System.Threading.Tasks;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
-    /* instances of this class are going to be subscribers to 
-     * RouteRequested events (see Links.cs) */
+    /// <summary>
+    /// instances of this class are going to be subscribers to
+    /// RouteRequested events(see Links.cs)
+    /// </summary>
     public class RouteRequestWatcher
     {
         /* City: angefragte Stadt. int: Anz. Anfragen für City. */
-        private Dictionary<string, int> RequestStatistics = new Dictionary<City, int>();
+        private Dictionary<City, int> RequestStatistics = new Dictionary<City, int>();
 
         /// <summary>
         /// THE EVENT HANDLER: it must have the same signature as the event's delegate.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        public void LogRouteRequests(object source, EventArgs e)
+        public void LogRouteRequests(object source, RouteRequestEventArgs e)
         {
-            
+            var key = e.ToCity;
+            var value = GetCityRequests(key);
             if (source == null || e == null)
             {
                 //throw exception
             }
-            RequestStatistics.Add(); //GetCityRequests um int zu inkrementieren
+            RequestStatistics.Add(key, value); //GetCityRequests um int zu inkrementieren
 
             //Zählerstände auf console.write
 
@@ -36,18 +39,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// </summary>
         /// <param name="city"></param>
         /// <returns></returns>
-        public int GetCityRequests(string cityName)
+        public int GetCityRequests(City city)
         {
-            if (cityName == null)
+            if (city == null)
             {
                 //throw exception
             }
-            if (!RequestStatistics.ContainsKey(cityName))
+            if (!RequestStatistics.ContainsKey(city))
             {
-                //throw exception
+                return 0;
             }
 
-            return RequestStatistics[cityName];
+            return RequestStatistics[city];
         }
     }
 }
