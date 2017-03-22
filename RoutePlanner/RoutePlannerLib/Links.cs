@@ -66,29 +66,98 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return Count - previousCount;
         }
 
-        /// <summary>
-        /// this method, when called, does the raising of an RouteRequested event.
-        /// or: this method, when called, fires an RouteRequested event.
-        /// Eventaufruf = firing an event
-        /// </summary>
-        /// <param name="fromCity"></param>
-        /// <param name="toCity"></param>
-        /// <param name="mode"></param>
-        /// <returns></returns>
+        
+
+
+        /*    region Lab04: Dijkstra implementation    */
         public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode)
         {
+            //DONE: inform listeners
             /* Find -> also suchen (implementierung folgt später */
             var from = cities[fromCity];
             var to = cities[toCity];
             /* Are there any subscribers? null = no */
-            if (RouteRequested != null && from != null && to != null) 
+            if (RouteRequested != null && from != null && to != null)
             {
                 /* RAISE THE EVENT: treat event name as Method with parameter list from its delegate */
                 RouteRequested(this, new RouteRequestEventArgs(from, to, mode));
             }
 
-            //TODO: implementierung fertig stellen
-            return new List<Link>();
+
+            //use dijkstra's algorithm to look for all single-source shortest paths
+            var visited = new Dictionary<City, DijkstraNode>();
+            var pending = new SortedSet<DijkstraNode>(new DijkstraNode[]
+            {
+                new DijkstraNode()
+                {
+                    VisitingCity = cities[fromCity],
+                    Distance = 0
+                }
+            });
+
+            while (pending.Any())
+            {
+                var cur = pending.Last();
+                pending.Remove(cur);
+
+                if (!visited.ContainsKey(cur.VisitingCity))
+                {
+                    visited[cur.VisitingCity] = cur;
+
+                    foreach (var link in FindAllLinksForCity(cur.VisitingCity, mode))
+                        pending.Add(new DijkstraNode()
+                        {
+                            VisitingCity = (link.FromCity.Equals(cur.VisitingCity)) ? link.ToCity : link.FromCity,
+                            Distance = cur.Distance + link.Distance,
+                            PreviousCity = cur.VisitingCity
+                        });
+                }
+            }
+
+            //did we find any route?
+            if (!visited.ContainsKey(cities[toCity]))
+                return null;
+
+            //create a list of cities that we passed along the way
+            var citiesEnRoute = new List<City>();
+            for (var c = cities[toCity]; c != null; c = visited[c].PreviousCity)
+                citiesEnRoute.Add(c);
+            citiesEnRoute.Reverse();
+
+            //convert that city-list into a list of links
+            IEnumerable<Link> paths = ConvertListOfCitiesToListOfLinks(citiesEnRoute);
+            return paths.ToList();
         }
+
+        private IEnumerable<Link> ConvertListOfCitiesToListOfLinks(List<City> citiesEnRoute)
+        {
+            /* Todo: need explanations. Where did you find out what to do? */
+            List<Link> _links = new List<Link>();
+            for (int i = 0; i < citiesEnRoute.Count - 1; i++)
+            {
+                _links.Add(new Link(citiesEnRoute[i], citiesEnRoute[i + 1], citiesEnRoute[i].Location.Distance(citiesEnRoute[i + 1].Location)));
+            }
+            return _links;
+        }
+
+        private IEnumerable<Link> FindAllLinksForCity(City visitingCity, TransportMode mode)
+        {
+            /* Todo: What happens here? Why this way? */
+            return links.Where(link => (link.ToCity.Equals(visitingCity) || link.FromCity.Equals(visitingCity)) && link.TransportMode.Equals(mode));
+        }
+
+
+        private class DijkstraNode : IComparable<DijkstraNode>
+        {
+            public City VisitingCity;
+            public double Distance;
+            public City PreviousCity;
+
+            public int CompareTo(DijkstraNode other)
+            {
+                return other.Distance.CompareTo(Distance);
+            }
+        }
+        /* END of lab04 */
     }
 }
