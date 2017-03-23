@@ -75,5 +75,36 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             return $"WayPoint:{((Name == null || Name == "") ? "" : " " + Name)} {lat}/{lng}";
         }
+
+
+        /* lab04: operator overloading */
+
+        /// <summary>
+        /// implicitly overrides +=
+        /// </summary>
+        /// <param name="wp1"></param>
+        /// <param name="wp2"></param>
+        /// <returns></returns>
+        public static WayPoint operator+ (WayPoint wp1, WayPoint wp2)
+        {
+            return new WayPoint(wp1.Name, 
+                                wp1.Latitude + wp2.Latitude,
+                                wp1.Longitude + wp2.Longitude);
+        }
+
+        /// <summary>
+        /// implicitly overrides -=
+        /// </summary>
+        /// <param name="wp1"></param>
+        /// <param name="wp2"></param>
+        /// <returns></returns>
+        public static WayPoint operator- (WayPoint wp1, WayPoint wp2)
+        {
+            return new WayPoint(wp1.Name,
+                                wp1.Latitude - wp2.Latitude,
+                                wp1.Longitude - wp2.Longitude);
+        }
+        /* END of lab04: operator overloading */
+
     }
 }
