@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
 using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib;
+using System.Globalization;
+using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -49,18 +51,17 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public int ReadLinks(string filename)
         {
             var previousCount = Count;
-            using (var reader = new StreamReader(filename))
+            using (TextReader reader = new StreamReader(filename))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                IEnumerable<string[]> linksAsStrings = reader.GetSplittedLines('\t');
+                foreach (string[] lk in linksAsStrings)
                 {
-                    var tokens = line.Split('\t');
-                    
-                    var city1 = cities[tokens[0]];
-                    var city2 = cities[tokens[1]];
-                    
+                    var city1 = cities[lk[0]];
+                    var city2 = cities[lk[1]];
+
                     links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail));
                 }
+
             }
             
             return Count - previousCount;

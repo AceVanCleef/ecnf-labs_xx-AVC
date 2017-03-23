@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
 
 /** Lessons learned:
  *  - parse double/int to string: 
@@ -143,6 +144,9 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// reads a \t deliminated file of cities and returns
         /// the amount of newly added cities.
         /// </summary>
+        /// <changelog>
+        /// lab04: replaced Reading of Files and ConverttoCity(filename) by Extensions.cs's GetSplittedLines() extension method.
+        /// </changelog>>
         /// <param name="filename"></param>
         /// <returns name="countNewEntries"></returns>
         public int ReadCities(string filename)
@@ -156,27 +160,24 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             try
             {
                 
-                using (var reader = new StreamReader(new FileStream(filename, FileMode.Open)))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
+                using (TextReader reader = new StreamReader(new FileStream(filename, FileMode.Open)))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
                 {
-                    while (reader.Peek() >= 0) // <- Are there more lines to read?
+                    IEnumerable<string[]> citiesAsStrings = reader.GetSplittedLines('\t');
+                    foreach(string[] cs in citiesAsStrings)
                     {
-                        string _FileLine = reader.ReadLine();
-                        
-                        //create new City:
-                        City NewCity = ConverttoCity(_FileLine); //nicht so. Sondern cities.add(city)
-                        //ist city schon drinn? wenn nein, dann erst hinzufügen
-                        if (!_cities.Contains(NewCity))
-                        {
-                            _cities.Add(NewCity);
-                            //increment count
-                            ++countNewEntries;
-                        }
+                        _cities.Add(new City(cs[0].Trim(), 
+                                    cs[1].Trim(), int.Parse(cs[2]), 
+                                    double.Parse(cs[3], CultureInfo.InvariantCulture), 
+                                    double.Parse(cs[4], CultureInfo.InvariantCulture)));
+                        //increment count
+                        ++countNewEntries;
+                    }
 
                         
-                    }
-                    //Note: using closes the file/stream automatically and also more  
-                    //      reliably. No .Close() or .Dispose() necessary.
-                }
+                    
+                    
+                }//Note: using closes the file/stream automatically and also more  
+                 //      reliably. No .Close() or .Dispose() necessary.
             } 
             catch (FileNotFoundException ffe)
             {
@@ -186,7 +187,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return countNewEntries;
         }
 
-        ///converts a String with \t as value delimiter to City attributes.
+        /// <summary>
+        /// converts a String with \t as value delimiter to City attributes.
+        /// </summary>
+        /// <changelog>
+        /// lab04: replaced by Extensions.cs's GetSplittedLines() extension method.
+        /// </changelog>>
+        /// <param name="fileline"></param>
+        /// <returns></returns>
         private static City ConverttoCity(string fileline)
         {
             string[] CityAttributes = fileline.Split('\t'); // single quote = character!
