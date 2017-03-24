@@ -49,12 +49,17 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             }
 
             // If parameter cannot be cast to City return false (must be instance of City).
-            City c = (City)obj; // <- when can't be cast, c == null
-            if ((object)c == null)
+            City c = null;
+            try
+            {
+                c = (City)obj; // <- when can't be cast, c == null
+            }
+            catch (InvalidCastException e)
             {
                 return false;
             }
 
+            
             // Return true if the fields match:
             
             return  this.Name.ToLowerInvariant() == c.Name.ToLowerInvariant() && 

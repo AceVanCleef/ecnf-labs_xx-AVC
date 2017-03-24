@@ -32,7 +32,7 @@ using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
  *    
  *    LINQ: pendant zu Java Collection Streams API
             * return:  an output sequence, transformed from input sequence
-            * _cities: Enumerable input sequnce (such as List, Array, SQL-DB).
+            * _cities: Enumerable input sequence (such as List, Array, SQL-DB).
             * city:    element of enumerable input sequence
             * a == b  conditional, search filter criteria (Predicate)
             * or:   lambda (n => a.contains(b))

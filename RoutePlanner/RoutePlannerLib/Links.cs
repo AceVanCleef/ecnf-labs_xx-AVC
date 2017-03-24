@@ -46,6 +46,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         ///	Reads a	list of	links from the given file.
         ///	Reads only links where the cities exist.
         ///	</summary>
+        ///	<changelog>
+        ///	lab04 - 1.c): 
+        ///	Ignorieren Sie beim Einlesen in Links.ReadRoutes Verbindungen 
+        /// zwischen unbekannten Städten.
+        /// Bsp: Schaffhausen nicht in citiesTestDataLab4, aber in linksTestDataLab4.
+        /// What changed?
+        /// Searching a city by using the Cities' Indexer threw a KeyNotFoundException.
+        /// I had to catch it using a try/catch - block.
+        /// </changelog>
         ///	<param name="filename">name	of links file</param>
         ///	<returns>number	of read	route</returns>
         public int ReadLinks(string filename)
@@ -56,10 +65,19 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 IEnumerable<string[]> linksAsStrings = reader.GetSplittedLines('\t');
                 foreach (string[] lk in linksAsStrings)
                 {
-                    var city1 = cities[lk[0]];
-                    var city2 = cities[lk[1]];
+                    try
+                    {
+                        var city1 = cities[lk[0]]; //city not found? indexer of Cities throws KeyNotFoundExc.
+                        var city2 = cities[lk[1]];
 
-                    links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail));
+                        // try == if (cities[city1.Name] != null && cities[city2.Name] != null)
+                        links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail));
+                    }
+                    catch (KeyNotFoundException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    
                 }
 
             }

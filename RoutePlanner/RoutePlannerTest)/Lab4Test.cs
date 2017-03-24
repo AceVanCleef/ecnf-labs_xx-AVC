@@ -93,7 +93,10 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
             expectedLinks.Add(new Link(new City("Liestal", "Switzerland", 7000, 1, 2),
                 new City("Basel", "Switzerland", 7000, 1, 2), 0));
 
-            var links = new Links(cities);
+            var links = new Links(cities); //eingelesene Städte nun in Links sichtbar.
+            /* 1.c): Ignorieren Sie beim Einlesen in Links.ReadRoutes Verbindungen 
+             * zwischen unbekannten Städten. 
+             * Bsp: Schaffhausen nicht in citiesTestDataLab4, aber in linksTestDataLab4. */
             links.ReadLinks(LinksTestFile);
 
             Assert.AreEqual(28, cities.Count);
