@@ -31,7 +31,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public delegate void RouteRequestHandler(object sender, RouteRequestEventArgs args);
         public event RouteRequestHandler RouteRequested; //-ing: event should be fired, -ed: event has happened and finished
 
-        
+        public City[] FindCities(TransportMode arg)
+        {
+            return links.Where(link => link.TransportMode == arg)
+                .Select(link => link.FromCity)
+                .ToArray();
+        }
+
+
 
         ///	<summary>
         ///	Initializes	the	Links with	the	cities.
@@ -63,7 +70,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             using (TextReader reader = new StreamReader(filename))
             {
                 IEnumerable<string[]> linksAsStrings = reader.GetSplittedLines('\t');
-                foreach (string[] lk in linksAsStrings)
+
+                IEnumerable<Link> newLinks = linksAsStrings.Select((string[] lk) =>
                 {
                     try
                     {
@@ -71,17 +79,36 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                         var city2 = cities[lk[1]];
 
                         // try == if (cities[city1.Name] != null && cities[city2.Name] != null)
-                        links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail));
+                        return new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail);
                     }
                     catch (KeyNotFoundException e)
                     {
                         Console.WriteLine(e.Message);
+                        return null;
+
                     }
-                    
-                }
+                });
+                links.AddRange(newLinks);
+
+                //foreach (string[] lk in linksasstrings)
+                //{
+                //    try
+                //    {
+                //        var city1 = cities[lk[0]]; //city not found? indexer of cities throws keynotfoundexc.
+                //        var city2 = cities[lk[1]];
+
+                //        // try == if (cities[city1.name] != null && cities[city2.name] != null)
+                //        links.add(new link(city1, city2, city1.location.distance(city2.location), transportmode.rail));
+                //    }
+                //    catch (keynotfoundexception e)
+                //    {
+                //        console.writeline(e.message);
+                //    }
+
+                //}
 
             }
-            
+
             return Count - previousCount;
         }
 

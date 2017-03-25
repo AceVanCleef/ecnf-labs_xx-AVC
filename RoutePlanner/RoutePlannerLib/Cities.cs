@@ -146,6 +146,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /// </summary>
         /// <changelog>
         /// lab04: replaced Reading of Files and ConverttoCity(filename) by Extensions.cs's GetSplittedLines() extension method.
+        /// lab05: replaced
+        /// foreach(string[] cs in citiesAsStrings) {
+        ///    _cities.Add(new City(cs[0].Trim(), ...)
+        ///    ++countNewEntries;
+        /// }
+        /// 
+        /// ...with LINQ
+        ///    IEnumerable<City> newCities = citiesAsStrings.Select(cs => new City(cs[0].Trim(),...)
+        ///    
         /// </changelog>>
         /// <param name="filename"></param>
         /// <returns name="countNewEntries"></returns>
@@ -163,19 +172,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 using (TextReader reader = new StreamReader(new FileStream(filename, FileMode.Open)))  //ToDo: necessary? : new FileStream(filename, FileMode.Open))
                 {
                     IEnumerable<string[]> citiesAsStrings = reader.GetSplittedLines('\t');
-                    foreach(string[] cs in citiesAsStrings)
-                    {
-                        _cities.Add(new City(cs[0].Trim(), 
-                                    cs[1].Trim(), int.Parse(cs[2]), 
-                                    double.Parse(cs[3], CultureInfo.InvariantCulture), 
-                                    double.Parse(cs[4], CultureInfo.InvariantCulture)));
-                        //increment count
-                        ++countNewEntries;
-                    }
+                    
+                    //IEnumerable<City> newcities:
+                    IEnumerable<City> newCities = citiesAsStrings.Select(cs => new City(
+                            cs[0].Trim(),
+                            cs[1].Trim(), 
+                            int.Parse(cs[2]),
+                            double.Parse(cs[3], CultureInfo.InvariantCulture),
+                            double.Parse(cs[4], CultureInfo.InvariantCulture)
+                        ));
+                    _cities.AddRange(newCities);
+                    countNewEntries = newCities.Count();
 
-                        
-                    
-                    
                 }//Note: using closes the file/stream automatically and also more  
                  //      reliably. No .Close() or .Dispose() necessary.
             } 
