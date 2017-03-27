@@ -34,7 +34,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public City[] FindCities(TransportMode arg)
         {
             return links.Where(link => link.TransportMode == arg)
-                .Select(link => link.FromCity)
+                .SelectMany(link => new[] { link.FromCity , link.ToCity })
+                .Distinct()
                 .ToArray();
         }
 
@@ -71,41 +72,42 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             {
                 IEnumerable<string[]> linksAsStrings = reader.GetSplittedLines('\t');
 
-                IEnumerable<Link> newLinks = linksAsStrings.Select((string[] lk) =>
+
+                /* Geht nicht. TestTask4Findroutes && TestTask4ReadRoutes */
+                //IEnumerable<Link> newLinks = linksAsStrings.Select((string[] lk) =>
+                //{
+                //    try
+                //    {
+                //        var city1 = cities[lk[0]]; //city not found? indexer of Cities throws KeyNotFoundExc.
+                //        var city2 = cities[lk[1]];
+
+                //        // try == if (cities[city1.Name] != null && cities[city2.Name] != null)
+                //        return new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail);
+                //    }
+                //    catch (KeyNotFoundException e)
+                //    {
+                //        Console.WriteLine(e.Message);
+                //        return null;
+                //    }
+                //});
+                //links.AddRange(newLinks);
+
+                foreach (string[] lk in linksAsStrings)
                 {
                     try
                     {
-                        var city1 = cities[lk[0]]; //city not found? indexer of Cities throws KeyNotFoundExc.
+                        var city1 = cities[lk[0]]; //city not found? indexer of cities throws keynotfoundexc.
                         var city2 = cities[lk[1]];
 
-                        // try == if (cities[city1.Name] != null && cities[city2.Name] != null)
-                        return new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail);
+                        // try == if (cities[city1.name] != null && cities[city2.name] != null)
+                        links.Add(new Link(city1, city2, city1.Location.Distance(city2.Location), TransportMode.Rail));
                     }
                     catch (KeyNotFoundException e)
                     {
                         Console.WriteLine(e.Message);
-                        return null;
-
                     }
-                });
-                links.AddRange(newLinks);
 
-                //foreach (string[] lk in linksasstrings)
-                //{
-                //    try
-                //    {
-                //        var city1 = cities[lk[0]]; //city not found? indexer of cities throws keynotfoundexc.
-                //        var city2 = cities[lk[1]];
-
-                //        // try == if (cities[city1.name] != null && cities[city2.name] != null)
-                //        links.add(new link(city1, city2, city1.location.distance(city2.location), transportmode.rail));
-                //    }
-                //    catch (keynotfoundexception e)
-                //    {
-                //        console.writeline(e.message);
-                //    }
-
-                //}
+                }
 
             }
 
