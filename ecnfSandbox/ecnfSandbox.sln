@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecnfSandboxConsole", "ecnfSandboxConsole\ecnfSandboxConsole.csproj", "{211B55E2-5112-48D0-A9CA-14612FF123E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecnfSandboxLib", "ecnfSandboxLib\ecnfSandboxLib.csproj", "{B37FA0B7-C739-4DA7-B9E8-1326AFE48E18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{211B55E2-5112-48D0-A9CA-14612FF123E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211B55E2-5112-48D0-A9CA-14612FF123E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211B55E2-5112-48D0-A9CA-14612FF123E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211B55E2-5112-48D0-A9CA-14612FF123E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B37FA0B7-C739-4DA7-B9E8-1326AFE48E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B37FA0B7-C739-4DA7-B9E8-1326AFE48E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B37FA0B7-C739-4DA7-B9E8-1326AFE48E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B37FA0B7-C739-4DA7-B9E8-1326AFE48E18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
