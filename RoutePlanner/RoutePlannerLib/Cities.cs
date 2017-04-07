@@ -60,7 +60,9 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         private List<City> _cities = new List<City>();
 
         /* public access to _cities (lab06) */
-        public List<City> CityList { get; set; }
+        public List<City> CityList {
+            get { return _cities; }
+        }
 
         /* amount of cities read from file and stored in _cities */
         public int Count { get { return _cities.Count(); } }  //Done: set löschen; get: _cities.count()

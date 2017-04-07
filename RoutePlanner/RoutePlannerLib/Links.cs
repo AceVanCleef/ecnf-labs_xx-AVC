@@ -212,7 +212,19 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /*************************** lab06 *******************************/
         public int GetCountOfThreeBiggestCitiesInLinks()
         {
-            return 0;
+            //Bei wievielen Links...    -> links.Count()
+            //treten die drei bevölkerungsreichsten Städte... 
+            //                          -> OrderByDescending(), .Take(3)
+            //aller Cities...           -> cities.CityList
+            //in den Links...           -> links
+            //als Start-Stadt auf ?     -> links.Where(link => threeBiggestCities.Contains(link.FromCity)) -ish
+            var threeBiggestCities = cities.CityList.OrderByDescending(city => city.Population)
+                .Take(3);
+            var count = links.Where(link => threeBiggestCities.Contains(link.FromCity))
+                .Count();
+            
+
+            return count;
         }
 
         public int GetCountOfThreeCitiesWithLongestNameInLinks()
