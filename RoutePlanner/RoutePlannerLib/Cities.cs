@@ -232,7 +232,13 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         /*************************** lab06 *******************************/
         public int GetPopulationOfShortestCityNames()
         {
-            return 0;
+            //Wie gross ist die Bevölkerungszahl... -> .Sum(city => city.Population)
+            //der drei Städte...                    -> .Take(3)
+            //mit den kürzesten Städtenamen?        -> .OrderBy(city.Name.Length).Take(3)
+            var shortestNamedCities = CityList.OrderBy(city => city.Name.Length)
+                .Take(3);
+            var accumulatedPopulation = shortestNamedCities.Sum(city => city.Population);
+            return accumulatedPopulation;
         }
 
         /*************************** END of lab06 *******************************/
