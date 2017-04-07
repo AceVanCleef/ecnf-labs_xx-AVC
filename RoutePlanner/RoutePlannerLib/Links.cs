@@ -229,7 +229,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public int GetCountOfThreeCitiesWithLongestNameInLinks()
         {
-            return 0;
+            //Bei wievielen Links...                -> links.Count();
+            //treten die Städte...                  -> cities.CityList
+            //mit den drei längsten Städtenamen...  -> .OrderByDescending(city => city.Name.Length).Take(3)
+            //in den Links...                       -> links.Where(..*.)
+            //insgesamt auf, entweder als Start- oder als Ziel-Stadt? -> *longestNamedCities.Contains(a) || longestNamedCities.Contains(b)
+            //a = link.FromCity, b = link.Tocity
+            var longestNamedCities = cities.CityList.OrderByDescending(city => city.Name.Length)
+                .Take(3);
+            var count = links.Where(link => longestNamedCities.Contains(link.FromCity) || longestNamedCities.Contains(link.ToCity))
+                .Count();
+
+            return count;
         }
 
         /*************************** END of lab06 *******************************/
