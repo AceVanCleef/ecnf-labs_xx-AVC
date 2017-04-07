@@ -226,5 +226,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return new City(name, city, population, location);
         }
 
+
+        /*************************** lab06 *******************************/
+        public int GetPopulationOfShortestCityNames()
+        {
+            return 0;
+        }
+
+        /*************************** END of lab06 *******************************/
+
+
     }
 }

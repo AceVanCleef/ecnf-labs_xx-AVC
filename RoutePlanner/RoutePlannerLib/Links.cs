@@ -207,5 +207,20 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             }
         }
         /* END of lab04 */
+
+        
+        /*************************** lab06 *******************************/
+        public int GetCountOfThreeBiggestCitiesInLinks()
+        {
+            return 0;
+        }
+
+        public int GetCountOfThreeCitiesWithLongestNameInLinks()
+        {
+            return 0;
+        }
+
+        /*************************** END of lab06 *******************************/
+
     }
 }

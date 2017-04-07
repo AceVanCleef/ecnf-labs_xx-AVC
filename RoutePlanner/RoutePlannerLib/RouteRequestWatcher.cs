@@ -63,5 +63,27 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             return RequestStatistics[city];
         }
+
+        /*************************** lab06 *******************************/
+
+        public virtual DateTime GetCurrentDate { get { return DateTime.Now; } }
+
+        public IEnumerable<City> GetBiggestCityOnDay(DateTime day)
+        {
+            return null;
+        }
+
+        public IEnumerable<City> GetLongestCityNamesWithinPeriod(DateTime from, DateTime to)
+        {
+            return null;
+        }
+
+        public IEnumerable<City> GetNotRequestedCities(Cities cities)
+        {
+            return null;
+        }
+
+        /*************************** END of lab06 *******************************/
+
     }
 }
